@@ -1,21 +1,42 @@
-let submitbtn = document.getElementById("submitbtn");
-let deletebtn = document.getElementById("deletebtn");
-submitbtn.addEventListener("click", (event)=>{
-//   e.preventDefault();
-  let desc = document.getElementById("desc");
-  let title = document.getElementById("title");
-  localStorage.setItem(`${title.value}`, `${JSON.stringify(desc.value)}`);
-  // localStorage.setItem("Description", `${JSON.stringify(desc.value)}`);
-  todo.innerHTML+=`
-  <h1>${title.value}</h1>
-  <h2>${desc.value}</h2>
-  <button id=${title.value}>Delete</button>`
-  document.getElementById(`${title.value}`).addEventListener("click", (event, ${title.value})=>{
-    this.innerHTML=''
-    localStorage.removeItem(`${title}`)
-    console.log(`${title}`)
-  })
-  // title.value=``
-  // desc.value=``
+let sub = document.getElementById("sub");
+let title = document.getElementById("title");
+let desc= document.getElementById("desc")
+let todo=document.getElementById("todo");
 
-});
+const refreshtodo=()=>{
+  // function refreshtodo(){
+    todo.innerHTML=``;
+    for(let i=0; i< localStorage.length; i++){
+      let key=localStorage.key(i);
+      let value= localStorage.getItem(key);
+      todo.innerHTML+=`
+      <div id=${key}>
+      <h1>${key}</h1>
+      <h2>${value}</h2>
+      <button id=${key}-dlt>Delete</button>
+      </div>`;
+    }
+  }
+let deletebtn=(event)=>{
+  if(event.target.nodeName==='BUTTON'){
+    let element=(document.getElementById(event.composedPath()[0].id)).parentElement
+    // console.log(event.composedPath()[0].id)
+    element.remove();
+    localStorage.removeItem(element.id)
+  }
+}
+
+
+sub.addEventListener("click", (event)=>{      //event listener for main submit button
+  localStorage.setItem(`${title.value}`, `${desc.value}`)
+  title.value=``;
+  desc.value=``;
+  refreshtodo();
+})
+
+todo.addEventListener("click", (event)=>{ // event listener for all delete buttons
+  deletebtn(event)
+})
+
+
+refreshtodo();

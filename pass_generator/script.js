@@ -39,7 +39,7 @@ const generatePassword = (option)=>{
     {
         case 'weak':
             display(pass.weak());
-            console.log(passwordDisplay)
+            console.log(passwordDisplay + " weak")
             break;
         case 'strong':
             console.log(pass.strong());
@@ -57,3 +57,8 @@ submit.addEventListener("click", ()=>{
     generatePassword(option.value);
     let pass = new password();
 })
+const passdis=()=>{
+    
+}
+passdis();
+console.log(passwordDisplay+" error")
