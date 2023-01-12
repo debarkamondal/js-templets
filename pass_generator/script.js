@@ -1,5 +1,5 @@
 let submit=document.getElementById("submit");
-let passwordDisplay= document.getElementById("passwordDisplay")
+let passwordDisplay= document.getElementById("passwordDisplay");
 
 class password{
     constructor(){
@@ -28,10 +28,7 @@ class password{
     }
 }
 
-const display = (pass)=>{
-    // passwordDisplay.innerHTML=`<h1>${pass}</h1>`;
-    console.log(passwordDisplay)
-}
+const display = (pass) => passwordDisplay.innerHTML=`<h1>${pass}</h1>`;
 
 const generatePassword = (option)=>{
     let pass = new password();
@@ -39,26 +36,19 @@ const generatePassword = (option)=>{
     {
         case 'weak':
             display(pass.weak());
-            console.log(passwordDisplay + " weak")
             break;
         case 'strong':
-            console.log(pass.strong());
+            display(pass.strong());
             break;
         case 'superstrong':
-            console.log(pass.superstrong());
+            display(pass.superstrong());
             break;
         case 'funny':
-            console.log(pass.funny());
+            display(pass.funny());
             break;
     }
 }
-submit.addEventListener("click", ()=>{
+submit.addEventListener("click", (event)=>{
     let option=document.querySelector('input[name="strength"]:checked')
     generatePassword(option.value);
-    let pass = new password();
 })
-const passdis=()=>{
-    
-}
-passdis();
-console.log(passwordDisplay+" error")
