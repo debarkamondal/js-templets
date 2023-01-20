@@ -29,7 +29,6 @@ function App() {
         <Route path="/" element={<TextForm />} />
         <Route path="/about" element={<About />} />
       </Routes>
-
     </>
   );
 }
