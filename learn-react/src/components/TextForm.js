@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 
 export default function TextForm(props) {
@@ -28,7 +28,7 @@ export default function TextForm(props) {
     const [text, setText] = useState("Enter text here");
     return (
         <>
-            <div className='my-3'>
+            <div className='my-3 container'>
                 <h1>{props.heading}</h1>
                 <form>
                     <div className="mb-3">
