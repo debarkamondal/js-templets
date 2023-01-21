@@ -14,7 +14,7 @@ export class NewsComponent extends Component {
   }
 
   async componentDidMount() {
-    let url = "https://newsapi.org/v2/everything?domains=wsj.com&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0";
+    let url = "https://newsapi.org/v2/top-headlines?country=in&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0";
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({
@@ -24,25 +24,32 @@ export class NewsComponent extends Component {
   }
 
   handlePrevClick = async () => {
-    let url = `https://newsapi.org/v2/everything?domains=wsj.com&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page - 1}`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      articles: parsedData.articles,
-      page: this.state.page - 1,
-      totalResults: parsedData.totalResults
-    })
-
+    if (this.state.page <= 1) {
+      let url = `https://newsapi.org/v2/top-headlines?country=in&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page - 1}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+        articles: parsedData.articles,
+        page: this.state.page - 1,
+        totalResults: parsedData.totalResults
+      })
+    }
   }
   handleNextClick = async () => {
-    let url = `https://newsapi.org/v2/everything?domains=wsj.com&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page + 1}`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      articles: parsedData.articles,
-      page: this.state.page + 1,
-      totalResults: parsedData.totalResults
-    })
+    if (this.state.page * 20 <= this.state.totalResults) {
+      let url = `https://newsapi.org/v2/top-headlines?country=in&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page + 1}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+        articles: parsedData.articles,
+        page: this.state.page + 1,
+        totalResults: parsedData.totalResults
+      })
+      console.log(parsedData.articles)
+    }
+    else {
+      this.setState({})
+    }
   }
 
   render() {
@@ -62,10 +69,10 @@ export class NewsComponent extends Component {
               </div>
             })}
           </div>
-          <div className='text-center'>{`${this.state.page * 20}/${this.state.totalResults}`}</div>
+          <div className='text-center'>{`${this.state.page * 20 <= this.state.totalResults ? this.state.page * 20 : this.state.totalResults}/${this.state.totalResults}`}</div>
           <div className="container justify-content-between d-flex">
             <button type="button" disabled={this.state.page <= 1} className="btn btn-primary" onClick={this.handlePrevClick}> &larr; Previous</button>
-            <button type="button" className="btn btn-primary" onClick={this.handleNextClick}>Next &rarr;</button>
+            <button type="button" disabled={this.state.page * 20 >= this.state.totalResults} className="btn btn-primary" onClick={this.handleNextClick}>Next &rarr;</button>
           </div>
         </div>
       </>
