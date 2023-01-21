@@ -24,7 +24,7 @@ export class NewsComponent extends Component {
   }
 
   handlePrevClick = async () => {
-    if (this.state.page <= 1) {
+    if (this.state.page >= 1) {
       let url = `https://newsapi.org/v2/top-headlines?country=in&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page - 1}`;
       let data = await fetch(url);
       let parsedData = await data.json();
@@ -45,10 +45,6 @@ export class NewsComponent extends Component {
         page: this.state.page + 1,
         totalResults: parsedData.totalResults
       })
-      console.log(parsedData.articles)
-    }
-    else {
-      this.setState({})
     }
   }
 
