@@ -1,36 +1,61 @@
 // import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react'
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar';
 import NewsComponent from './components/NewsComponent';
 import {
   createBrowserRouter,
   RouterProvider,
-  Outlet
 } from "react-router-dom";
+import RootLayout from './pages/RootLayout';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NewsComponent pageSize={20} category="general"/>,
+    element: <RootLayout/>,
+    children: [
+      {
+        index: true, 
+        element: <NewsComponent key="general" pageSize={21} category="general"/>
+      },
+      {
+        path: "sports",
+        element: <NewsComponent key="sports" pageSize={21} category="sports"/>,
+      },
+      {
+        path: "health",
+        element: <NewsComponent key="health" pageSize={21} category="health"/>,
+      },
+      {
+        path: "general", 
+        element: <NewsComponent key="general" pageSize={21} category="general"/>
+      },
+      {
+        path: "entertainment",
+        element: <NewsComponent key="entertainment" pageSize={21} category="entertainment"/>,
+      },
+      {
+        path: "science",
+        element: <NewsComponent key="science" pageSize={21} category="science"/>,
+      },
+      {
+        path: "business",
+        element: <NewsComponent key="business" pageSize={21} category="business"/>,
+      },
+      {
+        path: "technology",
+        element: <NewsComponent key="technology" pageSize={21} category="technology"/>,
+      }
+    ]
   },
-  {
-    path: "/sports",
-    element: <NewsComponent pageSize={20} category="sports"/>,
-  },
-  {
-    path: "/health",
-    element: <NewsComponent pageSize={20} category="health"/>,
-  }
+  
 ]);
 
 export default class App extends Component {
   render() {
     return (
-      <>
-      <Navbar />
-      <RouterProvider router={router} />
-      <Outlet/>
+      <>     
+      <RouterProvider router={router} />      
       </>
     )
   }

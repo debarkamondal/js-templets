@@ -13,9 +13,9 @@ export class NewsComponent extends Component {
       totalResults: 0,
     }
   }
-
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&pageSize=${this.props.pageSize}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0`;
+  async updateNews(){
+    const url = `https://newsapi.org/v2/top-headlines?language=en&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0`;
+    console.log(url)
     this.setState({loading: true});
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -25,33 +25,24 @@ export class NewsComponent extends Component {
       loading: false
     })
   }
+  async componentDidMount() {
+    this.updateNews();
+  }
 
   handlePrevClick = async () => {
     if (this.state.page >= 1) {
-      let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&pageSize=${this.props.pageSize}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page - 1}`;
-      this.setState({loading: true});
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      this.setState({
-        articles: parsedData.articles,
+      await this.setState({
         page: this.state.page - 1,
-        totalResults: parsedData.totalResults,
-        loading: false
       })
+      this.updateNews();
     }
   }
   handleNextClick = async () => {
     if (this.state.page * this.props.pageSize <= this.state.totalResults) {
-      let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&pageSize=${this.props.pageSize}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page + 1}`;
-      this.setState({loading: true});
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      this.setState({
-        articles: parsedData.articles,
+      await this.setState({
         page: this.state.page + 1,
-        totalResults: parsedData.totalResults,
-        loading: false
       })
+      this.updateNews();
     }
   }
 
