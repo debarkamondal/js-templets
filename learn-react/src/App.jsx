@@ -1,8 +1,8 @@
 import './App.css';
 import About from './components/About';
 import TextForm from './components/TextForm';
-import RootLayout from './Pages/RootLayout';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
+import RootLayout from './Pages/RootLayout';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<RootLayout />}>

@@ -22,7 +22,7 @@ export default function TextForm(props) {
 
     const clearTextArea=(event)=>{
         event.preventDefault();
-        setText("Enter text here");
+        setText("");
     }
 
     const [text, setText] = useState("Enter text here");
@@ -41,7 +41,9 @@ export default function TextForm(props) {
             </div>
             <div className="container">
             <h2 className='text-center'>Your text details</h2>
-                <p>{(text === "")? 0 : text.trim().split(" ").length} words and {text.trim().length} characters</p>
+                <p>{(text === "")? 0 : text.split(" ").filter((character)=>{
+                    return character !== "" && character !== "/n"
+                    }).length} words and {text.trim().length} characters</p>
                 <p>You saved "{text.trim().split(" ").length * 0.008}" minutes</p>
                 <h2 className='text-center'>Preview</h2>
                 <p>{text}</p>
