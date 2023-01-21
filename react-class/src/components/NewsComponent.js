@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
+// import PropTypes from 'prop-types'
 
 export class NewsComponent extends Component {
 
-  constructor() {
-    super();
+  static defaultProps={
+    pageSize : 21,
+    category: "general",
+  }
+
+  constructor(props) {
+    super(props);
     this.state = {
       articles: [],
       loading: false,
       page: 1,
       totalResults: 0,
     }
+    document.title=`NewsDezire | ${this.props.category.charAt(0).toUpperCase()+this.props.category.substr(1)}`;
   }
   async updateNews(){
     const url = `https://newsapi.org/v2/top-headlines?language=en&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0`;
@@ -49,7 +56,7 @@ export class NewsComponent extends Component {
     return (
       <>
         <div className='container my-3'>
-          <h1 className='text-center my-3'>Top deadlines</h1>
+          <h1 className='text-center my-3'>Top {this.props.category} headlines</h1>
           {this.state.loading && <Spinner />}
           <div className='row'>
             {!this.state.loading && this.state.articles.map((element) => {
