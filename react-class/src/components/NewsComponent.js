@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
+import Spinner from './Spinner';
 
 export class NewsComponent extends Component {
 
@@ -14,36 +15,42 @@ export class NewsComponent extends Component {
   }
 
   async componentDidMount() {
-    let url = "https://newsapi.org/v2/top-headlines?country=in&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0";
+    let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&pageSize=${this.props.pageSize}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0`;
+    this.setState({loading: true});
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({
       articles: parsedData.articles,
-      totalResults: parsedData.totalResults
+      totalResults: parsedData.totalResults,
+      loading: false
     })
   }
 
   handlePrevClick = async () => {
     if (this.state.page >= 1) {
-      let url = `https://newsapi.org/v2/top-headlines?country=in&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page - 1}`;
+      let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&pageSize=${this.props.pageSize}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page - 1}`;
+      this.setState({loading: true});
       let data = await fetch(url);
       let parsedData = await data.json();
       this.setState({
         articles: parsedData.articles,
         page: this.state.page - 1,
-        totalResults: parsedData.totalResults
+        totalResults: parsedData.totalResults,
+        loading: false
       })
     }
   }
   handleNextClick = async () => {
-    if (this.state.page * 20 <= this.state.totalResults) {
-      let url = `https://newsapi.org/v2/top-headlines?country=in&pageSize=20&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page + 1}`;
+    if (this.state.page * this.props.pageSize <= this.state.totalResults) {
+      let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&pageSize=${this.props.pageSize}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0&page=${this.state.page + 1}`;
+      this.setState({loading: true});
       let data = await fetch(url);
       let parsedData = await data.json();
       this.setState({
         articles: parsedData.articles,
         page: this.state.page + 1,
-        totalResults: parsedData.totalResults
+        totalResults: parsedData.totalResults,
+        loading: false
       })
     }
   }
@@ -52,9 +59,10 @@ export class NewsComponent extends Component {
     return (
       <>
         <div className='container my-3'>
-          <h2 className='text-center my-3'>Top deadlines</h2>
+          <h1 className='text-center my-3'>Top deadlines</h1>
+          {this.state.loading && <Spinner />}
           <div className='row'>
-            {this.state.articles.map((element) => {
+            {!this.state.loading && this.state.articles.map((element) => {
               let url = element.url ? element.url : "https://www.wsj.com/articles/new-display-tech-is-coming-from-apple-google-meta-microled-11674248409";
               let urlToImage = element.urlToImage ? element.urlToImage : "https://images.wsj.net/im-706795/social";
               let description = element.description ? element.description.substring(0, 150) + "..." : "Our phones, smartwatches and smart glasses will soon get longer battery life and better visibility in daylight";
@@ -65,10 +73,10 @@ export class NewsComponent extends Component {
               </div>
             })}
           </div>
-          <div className='text-center'>{`${this.state.page * 20 <= this.state.totalResults ? this.state.page * 20 : this.state.totalResults}/${this.state.totalResults}`}</div>
+          <div className='text-center'>{`${this.state.page * this.props.pageSize <= this.state.totalResults ? this.state.page * this.props.pageSize : this.state.totalResults}/${this.state.totalResults}`}</div>
           <div className="container justify-content-between d-flex">
             <button type="button" disabled={this.state.page <= 1} className="btn btn-primary" onClick={this.handlePrevClick}> &larr; Previous</button>
-            <button type="button" disabled={this.state.page * 20 >= this.state.totalResults} className="btn btn-primary" onClick={this.handleNextClick}>Next &rarr;</button>
+            <button type="button" disabled={this.state.page * this.props.pageSize >= this.state.totalResults} className="btn btn-primary" onClick={this.handleNextClick}>Next &rarr;</button>
           </div>
         </div>
       </>
