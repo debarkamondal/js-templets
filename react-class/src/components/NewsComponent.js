@@ -15,7 +15,6 @@ export class NewsComponent extends Component {
   }
   async updateNews(){
     const url = `https://newsapi.org/v2/top-headlines?language=en&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0`;
-    console.log(url)
     this.setState({loading: true});
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -58,9 +57,10 @@ export class NewsComponent extends Component {
               let urlToImage = element.urlToImage ? element.urlToImage : "https://images.wsj.net/im-706795/social";
               let description = element.description ? element.description.substring(0, 150) + "..." : "Our phones, smartwatches and smart glasses will soon get longer battery life and better visibility in daylight";
               let title = element.title ? element.title.substring(0, 45) + "..." : "New Display Tech Is Coming From Apple, Google, Meta and Others - The Wall Street Journal";
+              let source = element.source.name;
 
               return <div key={url} className="col-md-4">
-                <NewsItem title={title} description={description} imgUrl={urlToImage} newsUrl={url} />
+                <NewsItem title={title} description={description} imgUrl={urlToImage} newsUrl={url} source={source}/>
               </div>
             })}
           </div>
