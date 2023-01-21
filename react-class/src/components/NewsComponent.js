@@ -60,15 +60,16 @@ export class NewsComponent extends Component {
   render() {
     return (
       <>
-        <div className='container my-3'>
-          <h1 className='text-center my-3'>Top {this.props.category} headlines</h1>
-          {/* {this.state.loading && <Spinner />} */}
-          <InfiniteScroll
-            dataLength={this.state.articles.length}
-            next={this.fetchMoreData}
-            hasMore={this.state.articles.length !== this.totalResults}
-            loader={<Spinner />}
-          >
+
+        <h1 className='text-center my-3'>Top {this.props.category} headlines</h1>
+        {/* {this.state.loading && <Spinner />} */}
+        <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length !== this.totalResults}
+          loader={<Spinner />}
+        >
+          <div className='container my-3'>
             <div className='row'>
               {this.state.articles.map((element) => {
                 let url = element.url ? element.url : "https://www.wsj.com/articles/new-display-tech-is-coming-from-apple-google-meta-microled-11674248409";
@@ -77,19 +78,20 @@ export class NewsComponent extends Component {
                 let title = element.title ? element.title.substring(0, 45) + "..." : "New Display Tech Is Coming From Apple, Google, Meta and Others - The Wall Street Journal";
                 let source = element.source.name;
 
-                return <div key={url.concat(Math.random()*100)} className="col-md-4">
+                return <div key={url.concat(Math.random() * 100)} className="col-md-4">
                   <NewsItem title={title} description={description} imgUrl={urlToImage} newsUrl={url} source={source} />
                 </div>
               })}
             </div>
-          </InfiniteScroll>
-          {/* <div className='text-center'>{`${this.state.page * this.props.pageSize <= this.state.totalResults ? this.state.page * this.props.pageSize : this.state.totalResults}/${this.state.totalResults}`}</div>
+          </div>
+        </InfiniteScroll>
+        {/* <div className='text-center'>{`${this.state.page * this.props.pageSize <= this.state.totalResults ? this.state.page * this.props.pageSize : this.state.totalResults}/${this.state.totalResults}`}</div>
           <div className="container justify-content-between d-flex">
             <button type="button" disabled={this.state.page <= 1} className="btn btn-primary" onClick={this.handlePrevClick}> &larr; Previous</button>
             <button type="button" disabled={this.state.page * this.props.pageSize >= this.state.totalResults} className="btn btn-primary" onClick={this.handleNextClick}>Next &rarr;</button>
           </div> */}
-        </div>
       </>
+
     )
   }
 }
