@@ -22,7 +22,7 @@ export class NewsComponent extends Component {
   }
   updateNews = async () => {
     this.props.setProgress(0);
-    const url = `https://newsapi.org/v2/top-headlines?language=en&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0`;
+    const url = `https://newsapi.org/v2/top-headlines?language=en&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page}&apiKey=${this.props.apiKey}`;
     let data = await fetch(url);
     this.props.setProgress(30);
     let parsedData = await data.json();
