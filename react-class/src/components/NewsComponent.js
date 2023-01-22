@@ -21,48 +21,34 @@ export class NewsComponent extends Component {
     document.title = `NewsDezire | ${this.props.category.charAt(0).toUpperCase() + this.props.category.substr(1)}`;
   }
   updateNews = async () => {
+    this.props.setProgress(0);
     const url = `https://newsapi.org/v2/top-headlines?language=en&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page}&apiKey=2b2ec47caa5f40899bf142dc2645f5f0`;
-    this.setState({ loading: true });
     let data = await fetch(url);
+    this.props.setProgress(30);
     let parsedData = await data.json();
+    this.props.setProgress(80);
     this.setState({
       articles: this.state.articles.concat(parsedData.articles),
       totalResults: parsedData.totalResults,
       loading: false
     })
+    this.props.setProgress(100);
   }
   async componentDidMount() {
     this.updateNews();
   }
 
   fetchMoreData = async () => {
-    await this.setState({ page: this.state.page + 1 })
+    // console.log("ran fetch more page =" + this.state.page)
     this.updateNews();
   }
-
-  // handlePrevClick = async () => {
-  //   if (this.state.page >= 1) {
-  //     await this.setState({
-  //       page: this.state.page - 1,
-  //     })
-  //     this.updateNews();
-  //   }
-  // }
-  // handleNextClick = async () => {
-  //   if (this.state.page * this.props.pageSize <= this.state.totalResults) {
-  //     await this.setState({
-  //       page: this.state.page + 1,
-  //     })
-  //     this.updateNews();
-  //   }
-  // }
 
   render() {
     return (
       <>
 
         <h1 className='text-center my-3'>Top {this.props.category} headlines</h1>
-        {/* {this.state.loading && <Spinner />} */}
+        {this.state.loading && <Spinner />}
         <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
@@ -85,13 +71,7 @@ export class NewsComponent extends Component {
             </div>
           </div>
         </InfiniteScroll>
-        {/* <div className='text-center'>{`${this.state.page * this.props.pageSize <= this.state.totalResults ? this.state.page * this.props.pageSize : this.state.totalResults}/${this.state.totalResults}`}</div>
-          <div className="container justify-content-between d-flex">
-            <button type="button" disabled={this.state.page <= 1} className="btn btn-primary" onClick={this.handlePrevClick}> &larr; Previous</button>
-            <button type="button" disabled={this.state.page * this.props.pageSize >= this.state.totalResults} className="btn btn-primary" onClick={this.handleNextClick}>Next &rarr;</button>
-          </div> */}
       </>
-
     )
   }
 }
