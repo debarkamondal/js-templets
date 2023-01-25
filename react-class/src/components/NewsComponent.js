@@ -39,6 +39,7 @@ export class NewsComponent extends Component {
   }
 
   fetchMoreData = async () => {
+    this.setState({ page: this.state.page + 1 })
     // console.log("ran fetch more page =" + this.state.page)
     this.updateNews();
   }
